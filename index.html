@@ -69,17 +69,18 @@
             position: absolute;
             top: 50%;
             left: 50%;
-            width: 70vw;
-            max-width: 600px;
+            /* Aumento del tamaño: 70vw * 1.25 = 87.5vw */
+            width: 87.5vw; 
+            max-width: 750px; /* Aumento del máximo: 600px * 1.25 = 750px */
             height: auto;
-            max-height: 80vh;
+            max-height: 90vh; /* Ajustado para que quepa en pantallas más pequeñas */
             transform: translate(-50%, -50%) scale(0.1);
             opacity: 0;
             transition: transform 1s ease-in-out, opacity 1s ease-in-out;
             background-color: #fff;
             border-radius: 5px;
             box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-            padding: 20px;
+            padding: 25px; /* Aumentado el padding para el borde */
             box-sizing: border-box;
             z-index: 10;
             display: flex;
@@ -87,6 +88,10 @@
             align-items: center;
             justify-content: center;
             position: relative;
+
+            /* Decoración del borde de la hoja */
+            border: 3px solid #f06292; /* Borde sólido rosado */
+            box-shadow: 0 0 0 8px #ffc1e3; /* Segundo borde como un resplandor más claro */
         }
 
         #letter > * {
@@ -96,7 +101,7 @@
         #letter p {
             font-family: 'Simonetta', serif;
             color: #333;
-            font-size: 1.2em;
+            font-size: 1.3em; /* Un poco más grande para que se ajuste */
             line-height: 1.6;
             text-align: center;
             margin: 0;
@@ -106,9 +111,9 @@
 
         #postcard-image {
             position: absolute;
-            top: 15px;
-            right: 15px;
-            width: 100px;
+            top: 25px; /* Ajustado por el padding y borde */
+            right: 25px; /* Ajustado por el padding y borde */
+            width: 120px; /* Un poco más grande */
             height: auto;
             object-fit: contain;
             transform: rotate(10deg);
@@ -132,15 +137,14 @@
             z-index: 25;
         }
         
-        /* Contenedor de emojis que aísla la animación */
         #emoji-container {
             position: fixed;
             top: 0;
             left: 0;
             width: 100vw;
             height: 100vh;
-            pointer-events: none; /* Permite hacer clic en la carta a través de este contenedor */
-            z-index: 1; /* Detrás de la carta y el sobre */
+            pointer-events: none;
+            z-index: 1;
         }
 
         .heart {

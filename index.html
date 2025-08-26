@@ -16,29 +16,26 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            overflow: hidden;
             font-family: 'Arial', sans-serif;
             position: relative;
         }
 
-        #envelope-wrapper {
-            perspective: 1000px;
+        #envelope-container {
             position: relative;
             width: 300px;
             height: 200px;
             cursor: pointer;
-            transition: transform 1s ease-in-out;
-            box-shadow: 0 10px 20px rgba(0,0,0,0.2);
-            border-radius: 8px;
             z-index: 20;
         }
 
         #envelope {
-            position: relative;
+            position: absolute;
             width: 100%;
             height: 100%;
             transform-style: preserve-3d;
             transition: transform 1s ease-in-out;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+            border-radius: 8px;
         }
 
         .envelope-face {
@@ -54,7 +51,6 @@
             font-size: 1.5em;
             color: #e91e63;
             font-weight: bold;
-            transition: opacity 1s ease-in-out;
         }
 
         .envelope-front {
@@ -73,7 +69,7 @@
             max-width: 600px;
             height: auto;
             max-height: 80vh;
-            transform: translate(-50%, -50%) scale(0.1) rotateY(180deg); /* Corrección: Agregamos la rotación de vuelta */
+            transform: translate(-50%, -50%) scale(0.1);
             opacity: 0;
             transition: transform 1s ease-in-out, opacity 1s ease-in-out;
             background-color: #fff;
@@ -86,7 +82,6 @@
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            position: relative;
         }
         
         #letter p {
@@ -114,20 +109,13 @@
             z-index: 1;
         }
 
-        #envelope-wrapper.open {
-            transform: translateY(-50px);
-        }
-
-        #envelope-wrapper.open #envelope {
-            transform: rotateY(-180deg);
-        }
-
-        #envelope-wrapper.open .envelope-face {
+        #envelope-container.open #envelope {
+            transform: translateY(-50px) rotateY(-180deg) scale(0);
             opacity: 0;
         }
 
-        #envelope-wrapper.open #letter {
-            transform: translate(-50%, -50%) scale(1) rotateY(0deg); /* Corrección: Quitamos la rotación de regreso para que el texto se vea bien */
+        #envelope-container.open #letter {
+            transform: translate(-50%, -50%) scale(1);
             opacity: 1;
         }
 
@@ -153,32 +141,33 @@
     </style>
 </head>
 <body>
-    <div id="envelope-wrapper">
+    <div id="envelope-container">
         <div id="envelope">
             <div class="envelope-face envelope-front">
                 ❤️ Para Angie ❤️
             </div>
             <div class="envelope-face envelope-back">
             </div>
-            <div id="letter">
-                <img id="postcard-image" src="IMG-20250718-WA0021.jpg" alt="Foto de la carta">
-                <p>
-                    Mi amor, esta carta es solo para ti.<br>
-                    Cada día a tu lado es una aventura que no cambiaría por nada en el mundo.<br>
-                    Eres mi luz, mi alegría, mi todo.<br>
-                    Te amo con cada fibra de mi ser, hoy y siempre.<br><br>
-                    Con todo mi cariño,<br>
-                    Tu novio José
-                </p>
-            </div>
         </div>
     </div>
 
+    <div id="letter">
+        <img id="postcard-image" src="IMG-20250718-WA0021.jpg" alt="Foto de la carta">
+        <p>
+            Mi amor, esta carta es solo para ti.<br>
+            Cada día a tu lado es una aventura que no cambiaría por nada en el mundo.<br>
+            Eres mi luz, mi alegría, mi todo.<br>
+            Te amo con cada fibra de mi ser, hoy y siempre.<br><br>
+            Con todo mi cariño,<br>
+            Tu novio José
+        </p>
+    </div>
+
     <script>
-        const envelopeWrapper = document.getElementById('envelope-wrapper');
+        const envelopeContainer = document.getElementById('envelope-container');
         
-        envelopeWrapper.addEventListener('click', () => {
-            envelopeWrapper.classList.toggle('open');
+        envelopeContainer.addEventListener('click', () => {
+            envelopeContainer.classList.toggle('open');
         });
     </script>
 </body>

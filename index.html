@@ -90,7 +90,7 @@
         }
 
         #letter > * {
-            transform: rotateY(180deg); /* Revierte la rotación para que el contenido se vea normal */
+            transform: rotateY(180deg);
         }
         
         #letter p {
@@ -132,14 +132,13 @@
             z-index: 25;
         }
 
-        /* Estilos para los corazones */
         .heart {
             position: absolute;
             font-size: 2em;
             opacity: 0.6;
             animation: moveAndFade 6s linear forwards;
             pointer-events: none;
-            z-index: 1; /* Corazones detrás de la carta pero encima del fondo */
+            z-index: 1;
         }
         
         @keyframes moveAndFade {
@@ -149,7 +148,7 @@
             }
             100% {
                 transform: translate(var(--final-x), var(--final-y)) scale(0.5);
-                opacity: 0;
+                opacity: 0; /* Asegura que la opacidad sea 0 al final de la animación */
             }
         }
     </style>
@@ -178,7 +177,7 @@
 
     <script>
         const envelopeWrapper = document.getElementById('envelope-wrapper');
-        const body = document.body; /* Necesario para añadir los corazones al body */
+        const body = document.body;
         
         const emojis = ['♥️', '❤️', '❣️', '❤️‍🩹', '🌹', '💕', '💞', '💓', '💗', '💖', '💝', '💘', '🩷', '💌'];
 
@@ -195,13 +194,12 @@
         });
 
         function startHeartRain() {
-            /* Limpia cualquier intervalo anterior para evitar duplicados */
             if (heartInterval) {
                 clearInterval(heartInterval);
             }
             heartInterval = setInterval(() => {
                 createHeart();
-            }, 100); /* Puedes ajustar la frecuencia de los corazones */
+            }, 100);
         }
 
         function createHeart() {
@@ -211,24 +209,23 @@
             const randomEmoji = emojis[Math.floor(Math.random() * emojis.length)];
             heart.innerHTML = randomEmoji;
             
-            /* Genera puntos de inicio aleatorios desde los bordes del body */
-            const side = Math.floor(Math.random() * 4); // 0: arriba, 1: derecha, 2: abajo, 3: izquierda
+            const side = Math.floor(Math.random() * 4);
             let startX, startY;
 
             switch(side) {
-                case 0: // Desde arriba
+                case 0:
                     startX = Math.random() * window.innerWidth;
-                    startY = -50; // Inicia fuera de la pantalla
+                    startY = -50;
                     break;
-                case 1: // Desde la derecha
+                case 1:
                     startX = window.innerWidth + 50;
                     startY = Math.random() * window.innerHeight;
                     break;
-                case 2: // Desde abajo
+                case 2:
                     startX = Math.random() * window.innerWidth;
                     startY = window.innerHeight + 50;
                     break;
-                case 3: // Desde la izquierda
+                case 3:
                     startX = -50;
                     startY = Math.random() * window.innerHeight;
                     break;
@@ -237,7 +234,6 @@
             heart.style.left = `${startX}px`;
             heart.style.top = `${startY}px`;
             
-            /* Genera puntos finales aleatorios dentro del área visible */
             const finalX = Math.random() * window.innerWidth;
             const finalY = Math.random() * window.innerHeight;
 
@@ -248,7 +244,7 @@
 
             setTimeout(() => {
                 heart.remove();
-            }, 6000); // Duración de la animación
+            }, 6000);
         }
     </script>
 </body>

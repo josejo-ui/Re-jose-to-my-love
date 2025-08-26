@@ -18,6 +18,7 @@
             align-items: center;
             overflow: hidden;
             font-family: 'Arial', sans-serif;
+            position: relative;
         }
 
         #envelope-wrapper {
@@ -26,7 +27,7 @@
             width: 300px;
             height: 200px;
             cursor: pointer;
-            transition: transform 1s ease-in-out, opacity 1s ease-in-out; /* Añadida transición de opacidad */
+            transition: transform 1s ease-in-out;
             box-shadow: 0 10px 20px rgba(0,0,0,0.2);
             border-radius: 8px;
             z-index: 20;
@@ -53,6 +54,7 @@
             font-size: 1.5em;
             color: #e91e63;
             font-weight: bold;
+            transition: opacity 1s ease-in-out; /* Añadida transición de opacidad */
         }
 
         .envelope-front {
@@ -112,19 +114,43 @@
             z-index: 1;
         }
 
+        /* Cambios al abrir el sobre */
         #envelope-wrapper.open {
             transform: translateY(-50px);
-            opacity: 0; /* Hace que el sobre desaparezca al abrirse */
         }
 
         #envelope-wrapper.open #envelope {
             transform: rotateY(-180deg);
         }
 
+        /* Las caras del sobre se vuelven transparentes */
+        #envelope-wrapper.open .envelope-face {
+            opacity: 0;
+        }
+
         #envelope-wrapper.open #letter {
             transform: translate(-50%, -50%) scale(1);
             opacity: 1;
-            z-index: 20; /* Asegura que la carta quede encima de todo */
+        }
+
+        .heart {
+            position: absolute;
+            font-size: 2em;
+            opacity: 0.6;
+            animation: moveAndFade 6s linear forwards;
+            pointer-events: none;
+            z-index: 10;
+        }
+        
+        @keyframes moveAndFade {
+            0% {
+                transform: translate(0, 0) scale(1);
+                opacity: 0.6;
+            }
+            100% {
+                transform: translate(var(--final-x), var(--final-y)) scale(0.5);
+                opacity: 0;
+            }
         }
     </style>
 </head>
@@ -136,18 +162,18 @@
             </div>
             <div class="envelope-face envelope-back">
             </div>
+            <div id="letter">
+                <img id="postcard-image" src="IMG-20250718-WA0021.jpg" alt="Foto de la carta">
+                <p>
+                    Mi amor, esta carta es solo para ti.<br>
+                    Cada día a tu lado es una aventura que no cambiaría por nada en el mundo.<br>
+                    Eres mi luz, mi alegría, mi todo.<br>
+                    Te amo con cada fibra de mi ser, hoy y siempre.<br><br>
+                    Con todo mi cariño,<br>
+                    Tu novio José
+                </p>
+            </div>
         </div>
-    </div>
-    <div id="letter">
-        <img id="postcard-image" src="IMG-20250718-WA0021.jpg" alt="Foto de la carta">
-        <p>
-            Mi amor, esta carta es solo para ti.<br>
-            Cada día a tu lado es una aventura que no cambiaría por nada en el mundo.<br>
-            Eres mi luz, mi alegría, mi todo.<br>
-            Te amo con cada fibra de mi ser, hoy y siempre.<br><br>
-            Con todo mi cariño,<br>
-            Tu novio José
-        </p>
     </div>
 
     <script>

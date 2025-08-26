@@ -16,26 +16,29 @@
             display: flex;
             justify-content: center;
             align-items: center;
+            overflow: hidden;
             font-family: 'Arial', sans-serif;
             position: relative;
         }
 
-        #envelope-container {
+        #envelope-wrapper {
+            perspective: 1000px;
             position: relative;
             width: 300px;
             height: 200px;
             cursor: pointer;
+            transition: transform 1s ease-in-out;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+            border-radius: 8px;
             z-index: 20;
         }
 
         #envelope {
-            position: absolute;
+            position: relative;
             width: 100%;
             height: 100%;
             transform-style: preserve-3d;
             transition: transform 1s ease-in-out;
-            box-shadow: 0 10px 20px rgba(0,0,0,0.2);
-            border-radius: 8px;
         }
 
         .envelope-face {
@@ -51,6 +54,7 @@
             font-size: 1.5em;
             color: #e91e63;
             font-weight: bold;
+            transition: opacity 1s ease-in-out;
         }
 
         .envelope-front {
@@ -82,6 +86,22 @@
             flex-direction: column;
             align-items: center;
             justify-content: center;
+            position: relative;
+            /* El truco: La carta no se voltea */
+            transform: translate(-50%, -50%) scale(0.1);
+            opacity: 0;
+            transition: transform 1s ease-in-out, opacity 1s ease-in-out;
+        }
+
+        #letter-content {
+            /* Nuevo contenedor para el contenido de la carta */
+            width: 100%;
+            height: 100%;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
         }
         
         #letter p {
@@ -109,65 +129,51 @@
             z-index: 1;
         }
 
-        #envelope-container.open #envelope {
-            transform: translateY(-50px) rotateY(-180deg) scale(0);
+        /* Al abrir el sobre */
+        #envelope-wrapper.open #envelope {
+            transform: rotateY(-180deg);
+        }
+
+        #envelope-wrapper.open .envelope-face {
             opacity: 0;
         }
 
-        #envelope-container.open #letter {
+        #envelope-wrapper.open #letter {
             transform: translate(-50%, -50%) scale(1);
             opacity: 1;
-        }
-
-        .heart {
-            position: absolute;
-            font-size: 2em;
-            opacity: 0.6;
-            animation: moveAndFade 6s linear forwards;
-            pointer-events: none;
-            z-index: 10;
-        }
-        
-        @keyframes moveAndFade {
-            0% {
-                transform: translate(0, 0) scale(1);
-                opacity: 0.6;
-            }
-            100% {
-                transform: translate(var(--final-x), var(--final-y)) scale(0.5);
-                opacity: 0;
-            }
+            z-index: 25; /* Para que la carta esté sobre el sobre */
         }
     </style>
 </head>
 <body>
-    <div id="envelope-container">
+    <div id="envelope-wrapper">
         <div id="envelope">
             <div class="envelope-face envelope-front">
                 ❤️ Para Angie ❤️
             </div>
             <div class="envelope-face envelope-back">
             </div>
+            <div id="letter">
+                <div id="letter-content">
+                    <img id="postcard-image" src="IMG-20250718-WA0021.jpg" alt="Foto de la carta">
+                    <p>
+                        Mi amor, esta carta es solo para ti.<br>
+                        Cada día a tu lado es una aventura que no cambiaría por nada en el mundo.<br>
+                        Eres mi luz, mi alegría, mi todo.<br>
+                        Te amo con cada fibra de mi ser, hoy y siempre.<br><br>
+                        Con todo mi cariño,<br>
+                        Tu novio José
+                    </p>
+                </div>
+            </div>
         </div>
     </div>
 
-    <div id="letter">
-        <img id="postcard-image" src="IMG-20250718-WA0021.jpg" alt="Foto de la carta">
-        <p>
-            Mi amor, esta carta es solo para ti.<br>
-            Cada día a tu lado es una aventura que no cambiaría por nada en el mundo.<br>
-            Eres mi luz, mi alegría, mi todo.<br>
-            Te amo con cada fibra de mi ser, hoy y siempre.<br><br>
-            Con todo mi cariño,<br>
-            Tu novio José
-        </p>
-    </div>
-
     <script>
-        const envelopeContainer = document.getElementById('envelope-container');
+        const envelopeWrapper = document.getElementById('envelope-wrapper');
         
-        envelopeContainer.addEventListener('click', () => {
-            envelopeContainer.classList.toggle('open');
+        envelopeWrapper.addEventListener('click', () => {
+            envelopeWrapper.classList.toggle('open');
         });
     </script>
 </body>

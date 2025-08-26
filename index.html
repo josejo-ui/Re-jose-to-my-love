@@ -29,7 +29,7 @@
             transition: transform 1s ease-in-out;
             box-shadow: 0 10px 20px rgba(0,0,0,0.2);
             border-radius: 8px;
-            z-index: 20; /* Para asegurar que el sobre esté encima */
+            z-index: 20;
         }
 
         #envelope {
@@ -67,10 +67,10 @@
             position: absolute;
             top: 50%;
             left: 50%;
-            width: 70vw; /* Usa unidades relativas al viewport */
+            width: 70vw;
             max-width: 600px;
-            height: auto; /* Permite que la altura se ajuste al contenido */
-            max-height: 80vh; /* Se ajusta a la pantalla */
+            height: auto;
+            max-height: 80vh;
             transform: translate(-50%, -50%) scale(0.1);
             opacity: 0;
             transition: transform 1s ease-in-out, opacity 1s ease-in-out;
@@ -80,6 +80,11 @@
             padding: 20px;
             box-sizing: border-box;
             z-index: 10;
+            display: flex; /* Añadido para centrar el contenido */
+            flex-direction: column; /* Añadido para centrar el contenido */
+            align-items: center; /* Centra horizontalmente el contenido */
+            justify-content: center; /* Centra verticalmente el contenido */
+            position: relative; /* Necesario para posicionar la postal */
         }
         
         #letter p {
@@ -89,6 +94,24 @@
             line-height: 1.6;
             text-align: center;
             margin: 0;
+            position: relative; /* Asegura que el párrafo esté sobre la postal */
+            z-index: 2; /* Mayor que la postal */
+        }
+
+        /* Estilos para la imagen tipo postal */
+        #postcard-image {
+            position: absolute;
+            top: 15px; /* Ajusta la distancia desde arriba */
+            right: 15px; /* Ajusta la distancia desde la derecha */
+            width: 100px; /* Ancho de la postal */
+            height: auto; /* Altura automática para mantener proporciones */
+            object-fit: contain; /* Asegura que la imagen se vea completa sin recortes */
+            transform: rotate(10deg); /* Ángulo de inclinación */
+            border: 2px solid #ccc; /* Borde opcional */
+            border-radius: 5px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+            z-index: 1; /* Para que esté debajo del texto si se superponen */
+            opacity: 0.8; /* Opacidad de la postal */
         }
 
         /* Clase para abrir el sobre y la carta */
@@ -101,7 +124,7 @@
         }
 
         #envelope-wrapper.open #letter {
-            transform: translate(-50%, -50%) scale(1); /* Escala a tamaño normal */
+            transform: translate(-50%, -50%) scale(1);
             opacity: 1;
         }
     </style>
@@ -116,6 +139,7 @@
             </div>
         </div>
         <div id="letter">
+            <img id="postcard-image" src="IMG-20250718-WA0021.jpg" alt="Foto de la carta">
             <p>
                 Mi amor, esta carta es solo para ti.<br>
                 Cada día a tu lado es una aventura que no cambiaría por nada en el mundo.<br>

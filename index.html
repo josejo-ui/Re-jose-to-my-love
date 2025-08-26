@@ -26,7 +26,7 @@
             width: 300px;
             height: 200px;
             cursor: pointer;
-            transition: transform 1s ease-in-out;
+            transition: transform 1s ease-in-out, opacity 1s ease-in-out; /* Añadida transición de opacidad */
             box-shadow: 0 10px 20px rgba(0,0,0,0.2);
             border-radius: 8px;
             z-index: 20;
@@ -80,11 +80,11 @@
             padding: 20px;
             box-sizing: border-box;
             z-index: 10;
-            display: flex; /* Añadido para centrar el contenido */
-            flex-direction: column; /* Añadido para centrar el contenido */
-            align-items: center; /* Centra horizontalmente el contenido */
-            justify-content: center; /* Centra verticalmente el contenido */
-            position: relative; /* Necesario para posicionar la postal */
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            position: relative;
         }
         
         #letter p {
@@ -94,29 +94,27 @@
             line-height: 1.6;
             text-align: center;
             margin: 0;
-            position: relative; /* Asegura que el párrafo esté sobre la postal */
-            z-index: 2; /* Mayor que la postal */
+            position: relative;
+            z-index: 2;
         }
 
-        /* Estilos para la imagen tipo postal */
         #postcard-image {
             position: absolute;
-            top: 15px; /* Ajusta la distancia desde arriba */
-            right: 15px; /* Ajusta la distancia desde la derecha */
-            width: 100px; /* Ancho de la postal */
-            height: auto; /* Altura automática para mantener proporciones */
-            object-fit: contain; /* Asegura que la imagen se vea completa sin recortes */
-            transform: rotate(10deg); /* Ángulo de inclinación */
-            border: 2px solid #ccc; /* Borde opcional */
+            top: 15px;
+            right: 15px;
+            width: 100px;
+            height: auto;
+            object-fit: contain;
+            transform: rotate(10deg);
+            border: 2px solid #ccc;
             border-radius: 5px;
             box-shadow: 0 4px 8px rgba(0,0,0,0.2);
-            z-index: 1; /* Para que esté debajo del texto si se superponen */
-            opacity: 0.8; /* Opacidad de la postal */
+            z-index: 1;
         }
 
-        /* Clase para abrir el sobre y la carta */
         #envelope-wrapper.open {
             transform: translateY(-50px);
+            opacity: 0; /* Hace que el sobre desaparezca al abrirse */
         }
 
         #envelope-wrapper.open #envelope {
@@ -126,6 +124,7 @@
         #envelope-wrapper.open #letter {
             transform: translate(-50%, -50%) scale(1);
             opacity: 1;
+            z-index: 20; /* Asegura que la carta quede encima de todo */
         }
     </style>
 </head>
@@ -138,17 +137,17 @@
             <div class="envelope-face envelope-back">
             </div>
         </div>
-        <div id="letter">
-            <img id="postcard-image" src="IMG-20250718-WA0021.jpg" alt="Foto de la carta">
-            <p>
-                Mi amor, esta carta es solo para ti.<br>
-                Cada día a tu lado es una aventura que no cambiaría por nada en el mundo.<br>
-                Eres mi luz, mi alegría, mi todo.<br>
-                Te amo con cada fibra de mi ser, hoy y siempre.<br><br>
-                Con todo mi cariño,<br>
-                Tu novio José
-            </p>
-        </div>
+    </div>
+    <div id="letter">
+        <img id="postcard-image" src="IMG-20250718-WA0021.jpg" alt="Foto de la carta">
+        <p>
+            Mi amor, esta carta es solo para ti.<br>
+            Cada día a tu lado es una aventura que no cambiaría por nada en el mundo.<br>
+            Eres mi luz, mi alegría, mi todo.<br>
+            Te amo con cada fibra de mi ser, hoy y siempre.<br><br>
+            Con todo mi cariño,<br>
+            Tu novio José
+        </p>
     </div>
 
     <script>

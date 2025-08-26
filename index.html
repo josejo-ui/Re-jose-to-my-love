@@ -89,9 +89,8 @@
             position: relative;
         }
 
-        /* Aplica una rotación inversa para que el contenido de la carta se vea normal */
         #letter > * {
-            transform: rotateY(180deg);
+            transform: rotateY(180deg); /* Revierte la rotación para que el contenido se vea normal */
         }
         
         #letter p {
@@ -132,6 +131,27 @@
             opacity: 1;
             z-index: 25;
         }
+
+        /* Estilos para los corazones */
+        .heart {
+            position: absolute;
+            font-size: 2em;
+            opacity: 0.6;
+            animation: moveAndFade 6s linear forwards;
+            pointer-events: none;
+            z-index: 1; /* Corazones detrás de la carta pero encima del fondo */
+        }
+        
+        @keyframes moveAndFade {
+            0% {
+                transform: translate(0, 0) scale(1);
+                opacity: 0.6;
+            }
+            100% {
+                transform: translate(var(--final-x), var(--final-y)) scale(0.5);
+                opacity: 0;
+            }
+        }
     </style>
 </head>
 <body>
@@ -158,10 +178,78 @@
 
     <script>
         const envelopeWrapper = document.getElementById('envelope-wrapper');
+        const body = document.body; /* Necesario para añadir los corazones al body */
         
+        const emojis = ['♥️', '❤️', '❣️', '❤️‍🩹', '🌹', '💕', '💞', '💓', '💗', '💖', '💝', '💘', '🩷', '💌'];
+
+        let heartInterval;
+
         envelopeWrapper.addEventListener('click', () => {
             envelopeWrapper.classList.toggle('open');
+            if (envelopeWrapper.classList.contains('open')) {
+                startHeartRain();
+            } else {
+                clearInterval(heartInterval);
+                document.querySelectorAll('.heart').forEach(heart => heart.remove());
+            }
         });
+
+        function startHeartRain() {
+            /* Limpia cualquier intervalo anterior para evitar duplicados */
+            if (heartInterval) {
+                clearInterval(heartInterval);
+            }
+            heartInterval = setInterval(() => {
+                createHeart();
+            }, 100); /* Puedes ajustar la frecuencia de los corazones */
+        }
+
+        function createHeart() {
+            const heart = document.createElement('span');
+            heart.classList.add('heart');
+            
+            const randomEmoji = emojis[Math.floor(Math.random() * emojis.length)];
+            heart.innerHTML = randomEmoji;
+            
+            /* Genera puntos de inicio aleatorios desde los bordes del body */
+            const side = Math.floor(Math.random() * 4); // 0: arriba, 1: derecha, 2: abajo, 3: izquierda
+            let startX, startY;
+
+            switch(side) {
+                case 0: // Desde arriba
+                    startX = Math.random() * window.innerWidth;
+                    startY = -50; // Inicia fuera de la pantalla
+                    break;
+                case 1: // Desde la derecha
+                    startX = window.innerWidth + 50;
+                    startY = Math.random() * window.innerHeight;
+                    break;
+                case 2: // Desde abajo
+                    startX = Math.random() * window.innerWidth;
+                    startY = window.innerHeight + 50;
+                    break;
+                case 3: // Desde la izquierda
+                    startX = -50;
+                    startY = Math.random() * window.innerHeight;
+                    break;
+            }
+
+            heart.style.left = `${startX}px`;
+            heart.style.top = `${startY}px`;
+            
+            /* Genera puntos finales aleatorios dentro del área visible */
+            const finalX = Math.random() * window.innerWidth;
+            const finalY = Math.random() * window.innerHeight;
+
+            heart.style.setProperty('--final-x', `${finalX - startX}px`);
+            heart.style.setProperty('--final-y', `${finalY - startY}px`);
+
+            body.appendChild(heart);
+
+            setTimeout(() => {
+                heart.remove();
+            }, 6000); // Duración de la animación
+        }
     </script>
 </body>
 </html>

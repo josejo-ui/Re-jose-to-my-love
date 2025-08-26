@@ -69,18 +69,18 @@
             position: absolute;
             top: 50%;
             left: 50%;
-            /* Aumento del tamaño: 70vw * 1.25 = 87.5vw */
-            width: 87.5vw; 
-            max-width: 750px; /* Aumento del máximo: 600px * 1.25 = 750px */
+            /* Aumento del 25% */
+            width: 109.375vw; /* 87.5vw * 1.25 */
+            max-width: 937.5px; /* 750px * 1.25 */
             height: auto;
-            max-height: 90vh; /* Ajustado para que quepa en pantallas más pequeñas */
+            max-height: 95vh;
             transform: translate(-50%, -50%) scale(0.1);
             opacity: 0;
             transition: transform 1s ease-in-out, opacity 1s ease-in-out;
             background-color: #fff;
             border-radius: 5px;
             box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-            padding: 25px; /* Aumentado el padding para el borde */
+            padding: 25px;
             box-sizing: border-box;
             z-index: 10;
             display: flex;
@@ -88,10 +88,8 @@
             align-items: center;
             justify-content: center;
             position: relative;
-
-            /* Decoración del borde de la hoja */
-            border: 3px solid #f06292; /* Borde sólido rosado */
-            box-shadow: 0 0 0 8px #ffc1e3; /* Segundo borde como un resplandor más claro */
+            border: 3px solid #f06292;
+            box-shadow: 0 0 0 8px #ffc1e3;
         }
 
         #letter > * {
@@ -101,7 +99,7 @@
         #letter p {
             font-family: 'Simonetta', serif;
             color: #333;
-            font-size: 1.3em; /* Un poco más grande para que se ajuste */
+            font-size: 1.3em;
             line-height: 1.6;
             text-align: center;
             margin: 0;
@@ -111,9 +109,9 @@
 
         #postcard-image {
             position: absolute;
-            top: 25px; /* Ajustado por el padding y borde */
-            right: 25px; /* Ajustado por el padding y borde */
-            width: 120px; /* Un poco más grande */
+            top: 25px;
+            right: 25px;
+            width: 120px;
             height: auto;
             object-fit: contain;
             transform: rotate(10deg);
@@ -154,12 +152,32 @@
             pointer-events: none;
         }
         
+        .floating-image {
+            position: absolute;
+            width: 150px; /* Tamaño de la foto flotante */
+            height: auto;
+            border-radius: 5px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+            animation: moveAndFadeImage 6s linear forwards;
+            pointer-events: none;
+            opacity: 0.8;
+        }
+
         @keyframes moveAndFade {
             0% {
                 transform: translate(0, 0) scale(1);
             }
             100% {
                 transform: translate(var(--final-x), var(--final-y)) scale(0.5);
+            }
+        }
+        
+        @keyframes moveAndFadeImage {
+            0% {
+                transform: translate(0, 0) scale(1);
+            }
+            100% {
+                transform: translate(var(--final-x), var(--final-y)) scale(0.7);
             }
         }
     </style>
@@ -193,34 +211,46 @@
         const emojiContainer = document.getElementById('emoji-container');
         
         const emojis = ['♥️', '❤️', '❣️', '❤️‍🩹', '🌹', '💕', '💞', '💓', '💗', '💖', '💝', '💘', '🩷', '💌'];
+        const floatingImages = ['IMG-20250718-WA0021.jpg']; // Aquí puedes añadir más fotos si quieres
 
         let heartInterval;
+        let imageInterval;
 
         envelopeWrapper.addEventListener('click', () => {
             envelopeWrapper.classList.toggle('open');
             if (envelopeWrapper.classList.contains('open')) {
-                startHeartRain();
+                startAnimations();
             } else {
-                clearInterval(heartInterval);
-                document.querySelectorAll('.heart').forEach(heart => heart.remove());
+                stopAnimations();
             }
         });
 
-        function startHeartRain() {
-            if (heartInterval) {
-                clearInterval(heartInterval);
-            }
+        function startAnimations() {
+            if (heartInterval) clearInterval(heartInterval);
+            if (imageInterval) clearInterval(imageInterval);
+
             heartInterval = setInterval(() => {
-                createHeart();
+                createEmoji();
             }, 100);
+
+            imageInterval = setInterval(() => {
+                createFloatingImage();
+            }, 500); // Crea una foto cada 0.5 segundos
+        }
+        
+        function stopAnimations() {
+            clearInterval(heartInterval);
+            clearInterval(imageInterval);
+            document.querySelectorAll('.heart').forEach(el => el.remove());
+            document.querySelectorAll('.floating-image').forEach(el => el.remove());
         }
 
-        function createHeart() {
-            const heart = document.createElement('span');
-            heart.classList.add('heart');
+        function createEmoji() {
+            const emoji = document.createElement('span');
+            emoji.classList.add('heart');
             
             const randomEmoji = emojis[Math.floor(Math.random() * emojis.length)];
-            heart.innerHTML = randomEmoji;
+            emoji.innerHTML = randomEmoji;
             
             const side = Math.floor(Math.random() * 4);
             let startX, startY;
@@ -244,19 +274,64 @@
                     break;
             }
 
-            heart.style.left = `${startX}px`;
-            heart.style.top = `${startY}px`;
+            emoji.style.left = `${startX}px`;
+            emoji.style.top = `${startY}px`;
             
             const finalX = Math.random() * window.innerWidth;
             const finalY = Math.random() * window.innerHeight;
 
-            heart.style.setProperty('--final-x', `${finalX - startX}px`);
-            heart.style.setProperty('--final-y', `${finalY - startY}px`);
+            emoji.style.setProperty('--final-x', `${finalX - startX}px`);
+            emoji.style.setProperty('--final-y', `${finalY - startY}px`);
 
-            emojiContainer.appendChild(heart);
+            emojiContainer.appendChild(emoji);
 
             setTimeout(() => {
-                heart.remove();
+                emoji.remove();
+            }, 6000);
+        }
+
+        function createFloatingImage() {
+            const img = document.createElement('img');
+            img.classList.add('floating-image');
+            
+            const randomImageSrc = floatingImages[Math.floor(Math.random() * floatingImages.length)];
+            img.src = randomImageSrc;
+            
+            const side = Math.floor(Math.random() * 4);
+            let startX, startY;
+
+            switch(side) {
+                case 0:
+                    startX = Math.random() * window.innerWidth;
+                    startY = -100;
+                    break;
+                case 1:
+                    startX = window.innerWidth + 100;
+                    startY = Math.random() * window.innerHeight;
+                    break;
+                case 2:
+                    startX = Math.random() * window.innerWidth;
+                    startY = window.innerHeight + 100;
+                    break;
+                case 3:
+                    startX = -100;
+                    startY = Math.random() * window.innerHeight;
+                    break;
+            }
+
+            img.style.left = `${startX}px`;
+            img.style.top = `${startY}px`;
+            
+            const finalX = Math.random() * window.innerWidth;
+            const finalY = Math.random() * window.innerHeight;
+
+            img.style.setProperty('--final-x', `${finalX - startX}px`);
+            img.style.setProperty('--final-y', `${finalY - startY}px`);
+
+            emojiContainer.appendChild(img);
+
+            setTimeout(() => {
+                img.remove();
             }, 6000);
         }
     </script>
